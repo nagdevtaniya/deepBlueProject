@@ -1,10 +1,18 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
+<<<<<<< HEAD
 project(depp_blue_project LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "depp_blue_project")
+=======
+project(deep_blue_project LANGUAGES CXX)
+
+# The name of the executable created for the application. Change this to change
+# the on-disk name of your application.
+set(BINARY_NAME "deep_blue_project")
+>>>>>>> e8bc99951445ac556d63549bcd757f6be1bd2269
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
