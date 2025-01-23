@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'predict.dart';
 class CustomerPredictionForm extends StatefulWidget {
   @override
   _CustomerPredictionFormState createState() => _CustomerPredictionFormState();
@@ -175,7 +175,10 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
                 child: Text('Submit'),
               ),
               ElevatedButton(onPressed: (){
-                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PredictionForm()),
+                );
               }, child: Text('View Analysis'))
             ],
           ),
