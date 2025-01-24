@@ -4,10 +4,17 @@ project(runner LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
+<<<<<<< HEAD
+set(BINARY_NAME "depp_blue_project")
+# The unique GTK application identifier for this application. See:
+# https://wiki.gnome.org/HowDoI/ChooseApplicationID
+set(APPLICATION_ID "com.example.depp_blue_project")
+=======
 set(BINARY_NAME "deep_blue_project")
 # The unique GTK application identifier for this application. See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
 set(APPLICATION_ID "com.example.deep_blue_project")
+>>>>>>> e8bc99951445ac556d63549bcd757f6be1bd2269
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
