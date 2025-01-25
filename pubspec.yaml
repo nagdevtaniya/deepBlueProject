@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.5.4" # or sdk: ^3.5.4 if you prefer
+  sdk: ">=2.17.0 <4.0.0" # or sdk: ^3.5.4 if you prefer
 
 dependencies:
   flutter:
@@ -13,7 +13,7 @@ dependencies:
   flutter_otp_text_field: ^1.1.0+2
   flutter_speed_dial: ^7.0.0
   carousel_slider: ^5.0.0
-  flutter_map: ^3.0.0 # if you want to keep this dependency
+  flutter_map: ^7.0.2 # if you want to keep this dependency
   geolocator: ^13.0.2 # if you want to keep this dependency
   latlong2: ^0.9.1 # if you want to keep this dependency
   intl: ^0.20.1 # or ^0.18.0 based on your preference
@@ -25,7 +25,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
