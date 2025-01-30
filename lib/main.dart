@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -5,11 +7,24 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'recipe chatbot.dart';
 import 'homePage.dart';
 
-void main() {
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  if(kIsWeb){
+    await Firebase.initializeApp(options: FirebaseOptions(apiKey: "AIzaSyBgosWtUQ3tuz1N8SbEtxI_th7pWcfhzTo",
+        authDomain: "deep-blue-project-b05a1.firebaseapp.com",
+        projectId: "deep-blue-project-b05a1",
+        storageBucket: "deep-blue-project-b05a1.firebasestorage.app",
+        messagingSenderId: "842871110807",
+        appId: "1:842871110807:web:a1caaa99b7f5c5d212fdd2"));
+  }else{
+    await Firebase.initializeApp();
+  }
 
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

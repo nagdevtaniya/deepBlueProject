@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "842871110807",
+    "project_id": "deep-blue-project-b05a1",
+    "storage_bucket": "deep-blue-project-b05a1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842871110807:android:498dd4494a00d0e312fdd2",
+        "android_client_info": {
+          "package_name": "com.example.deep_blue_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy753J-EPzfgaGZLjumgJgam-C8kRYFn4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

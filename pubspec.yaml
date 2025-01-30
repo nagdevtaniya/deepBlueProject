@@ -1,4 +1,4 @@
-name: deep_blue
+name: deep_blue_project
 description: "A new Flutter project."
 publish_to: 'none'
 
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^3.10.1
   flutter_otp_text_field: ^1.1.0+2
   flutter_speed_dial: ^7.0.0
   carousel_slider: ^5.0.0
@@ -26,6 +27,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+
 
 flutter:
   uses-material-design: true
