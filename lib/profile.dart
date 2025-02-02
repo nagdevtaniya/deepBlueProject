@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,9 +25,29 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool _isEditing = false;
-  final TextEditingController _usernameController = TextEditingController(text: "UserName");
-  final TextEditingController _phoneController = TextEditingController(text: "9999888877");
-  final TextEditingController _addressController = TextEditingController(text: "NY - Street 21-no 34");
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  // Fetch user data from Firestore
+  void _fetchUserData() async {
+    // Assuming a document named 'user1' in 'users' collection
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc('user1').get();
+
+    if (userDoc.exists) {
+      setState(() {
+        _usernameController.text = userDoc['username'] ?? "Default Name";
+        _phoneController.text = userDoc['phone'] ?? "-";
+        _addressController.text = userDoc['address'] ?? "Unknown Address";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +65,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 end: Alignment.bottomRight,
               ),
             ),
-
           ),
           // Back Button
           Positioned(
@@ -53,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
-                Navigator.of(context).pop(); // This will handle back navigation
+                Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -64,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Align(
             alignment: Alignment.topCenter,
             child: Container(
-              margin: const EdgeInsets.only(top: 130), // Adjust margin for spacing
+              margin: const EdgeInsets.only(top: 130),
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
               decoration: const BoxDecoration(
@@ -77,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 50), // For image spacing
+                    const SizedBox(height: 50),
                     _isEditing ? buildEditableInfoRow("Username:", _usernameController) : buildInfoRow("Username:", _usernameController.text),
                     _isEditing ? buildEditableInfoRow("Phone Number:", _phoneController) : buildInfoRow("Phone Number:", _phoneController.text),
                     _isEditing ? buildEditableInfoRow("Address:", _addressController) : buildInfoRow("Address:", _addressController.text),

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';  // Add this import
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'recipe chatbot.dart';
 import 'homePage.dart';
+import 'register.dart';
 
 
 void main() async{
@@ -63,10 +65,6 @@ class _WelcomePageState extends State<WelcomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('assets/logo.png', height: 150,), // Replace with your logo path
-
-
-
-
             ],
           ),
 
@@ -76,9 +74,6 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 }
 
-
-
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -87,6 +82,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -95,18 +91,91 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  Future<void> _login() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    try {
+      // Sign in with Firebase Authentication
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // If login is successful, navigate to the main screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "An error occurred. Please try again.";
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password provided.';
+      }
+      // Show error message
+      _showErrorDialog(errorMessage);
+    }
+  }
+
+  Future<void> _signUp() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    try {
+      // Sign up with Firebase Authentication
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // If registration is successful, navigate to the main screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "An error occurred. Please try again.";
+      if (e.code == 'weak-password') {
+        errorMessage = 'The password is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'The email is already in use.';
+      }
+      // Show error message
+      _showErrorDialog(errorMessage);
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
-            // Add your app logo here (replace with your actual logo image)
-            Image.asset('assets/logo.png', height: 120,), // Replace with your logo file path
+            Image.asset('assets/logo.png', height: 120),
             SizedBox(height: 20),
             TextField(
               controller: _emailController,
@@ -126,28 +195,17 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Handle login logic here
-                String email = _emailController.text;
-                String password = _passwordController.text;
-
-                // TODO: Implement login logic (e.g., API call)
-                // If login successful:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainScreen()),
-                );
-
-                // If login fails:
-                // Show an error message to the user
-              },
+              onPressed: _login, // Call login method
               child: Text('Login'),
             ),
             SizedBox(height: 10),
             TextButton(
               onPressed: () {
                 // Navigate to registration page
-                Navigator.pushNamed(context, '/register'); // Replace with your registration page route
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                );
               },
               child: Text('Don\'t have an account? Register'),
             ),
