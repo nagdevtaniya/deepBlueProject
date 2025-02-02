@@ -1,7 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'create_event.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -24,9 +28,9 @@ class _EventPageState extends State<EventPage> {
   int _currentIndex = 0;
 
   final List<String> _texts = [
-    'Our app helps you organize events effortlessly. Plan and schedule your events with ease, ensuring that every detail is accounted for. With a user-friendly interface and smart tools, creating an event becomes a hassle-free experience.',
-    'Keep everyone on the same page with our collaboration features. Share event details with your team, send instant updates, and manage tasks efficiently to ensure a successful event execution.',
-    'Track RSVPs, manage attendees, and analyze event performance all in one place. From tracking confirmations to sending reminders, our app provides all the tools you need to host a seamless event.',
+    'Our app helps you organize events effortlessly. Plan and schedule your events with ease, ensuring that every detail is accounted for.',
+    'Keep everyone on the same page with our collaboration features. Share event details with your team, send instant updates, and manage tasks efficiently.',
+    'Track RSVPs, manage attendees, and analyze event performance all in one place.',
   ];
 
   PageController _pageController = PageController();
@@ -67,19 +71,32 @@ class _EventPageState extends State<EventPage> {
     );
   }
 
+  void _createEvent(Map<String, dynamic> eventData) async {
+    try {
+      // Create a new event in Firestore collection (automatically creates the collection)
+      await FirebaseFirestore.instance.collection('events').add(eventData);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Event Created Successfully!")),
+      );
+    } catch (error) {
+      print("Error creating event: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to create event: $error")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.network(
               'https://t3.ftcdn.net/jpg/09/73/00/10/360_F_973001010_9jQNAezyjwE88UWaF6hYnLyEUDwM9cam.jpg',
               fit: BoxFit.cover,
             ),
           ),
-          // White Interface Positioned from 60% of the Screen to Bottom
           Positioned(
             top: MediaQuery.of(context).size.height * 0.6,
             left: 0,
@@ -97,7 +114,6 @@ class _EventPageState extends State<EventPage> {
               padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
               child: Column(
                 children: [
-                  // Title
                   Text(
                     'Schedule an event',
                     style: TextStyle(
@@ -108,7 +124,6 @@ class _EventPageState extends State<EventPage> {
                     ),
                   ),
                   SizedBox(height: 12),
-                  // PageView for Scrolling and Text
                   Expanded(
                     child: PageView.builder(
                       controller: _pageController,
@@ -134,7 +149,6 @@ class _EventPageState extends State<EventPage> {
                     ),
                   ),
                   SizedBox(height: 40),
-                  // Indicator Dots
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
@@ -160,11 +174,9 @@ class _EventPageState extends State<EventPage> {
                     ),
                   ),
                   Spacer(),
-                  // Buttons Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Past Event Response Button
                       ElevatedButton(
                         onPressed: () => _showPopup(context),
                         style: ElevatedButton.styleFrom(
@@ -178,14 +190,21 @@ class _EventPageState extends State<EventPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      // Get Started Button
-                      // Get Started Button
                       ElevatedButton(
                         onPressed: () {
-                          // Navigate to CreateEvent page when pressed
+                          // Sample event data to create
+                          Map<String, dynamic> eventData = {
+                            'eventTitle': 'Sample Event',
+                            'date': '2025-12-31',
+                            'time': '18:00',
+                            'description': 'This is a sample event description.',
+                            'place': 'Sample Location',
+                            'createdAt': FieldValue.serverTimestamp(),
+                          };
+                          _createEvent(eventData);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>Event()), // Replace CreateEvent with your target page
+                            MaterialPageRoute(builder: (context) => Event()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
