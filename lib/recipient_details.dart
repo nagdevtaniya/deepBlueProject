@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
 import 'volunteer_details.dart';
 
-void main() {
-  runApp(RecipientDetailsApp());
-}
-
-class RecipientDetailsApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: RecipientDetailsPage(),
-    );
-  }
-}
-
 class RecipientDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
