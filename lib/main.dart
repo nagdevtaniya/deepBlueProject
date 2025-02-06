@@ -3,9 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';  // Add this import
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'recipe chatbot.dart';
 import 'homePage.dart';
 import 'register.dart';
 
@@ -26,7 +23,7 @@ void main() async{
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,6 +34,8 @@ class MyApp extends StatelessWidget {
 }
 
 class WelcomePage extends StatefulWidget {
+  const WelcomePage({super.key});
+
   @override
   State<WelcomePage> createState() => _WelcomePageState();
 }
@@ -75,6 +74,8 @@ class _WelcomePageState extends State<WelcomePage> {
 }
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }

@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() => runApp(FoodDonationApp());
-
-class FoodDonationApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: FoodDonationForm(),
-    );
-  }
-}
-
 class FoodDonationForm extends StatefulWidget {
+  const FoodDonationForm({super.key});
+
   @override
   _FoodDonationFormState createState() => _FoodDonationFormState();
 }
@@ -48,7 +38,7 @@ class _FoodDonationFormState extends State<FoodDonationForm> {
     if (selectedTime != null) {
       setState(() {
         _selectedTime = selectedTime;
-        _timeController.text = "${selectedTime.format(context)}";
+        _timeController.text = selectedTime.format(context);
       });
     }
   }
@@ -120,9 +110,9 @@ class _FoodDonationFormState extends State<FoodDonationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.yellow[400],
+        backgroundColor: Color(0xFF4A148C),
         title: Row(
           children: [
             GestureDetector(
@@ -137,7 +127,7 @@ class _FoodDonationFormState extends State<FoodDonationForm> {
             ),
             SizedBox(width: 10),
             Text(
-              "Food Donation Request Form",
+              "Food Donation Request",
               style: TextStyle(color: Colors.black),
             ),
           ],
@@ -237,11 +227,11 @@ class _FoodDonationFormState extends State<FoodDonationForm> {
                   border: OutlineInputBorder(),
                 ),
                 items: [
-                  DropdownMenuItem(child: Text("India"), value: "India"),
-                  DropdownMenuItem(child: Text("United States"), value: "United States"),
-                  DropdownMenuItem(child: Text("Canada"), value: "Canada"),
-                  DropdownMenuItem(child: Text("Australia"), value: "Australia"),
-                  DropdownMenuItem(child: Text("United Kingdom"), value: "United Kingdom"),
+                  DropdownMenuItem(value: "India", child: Text("India")),
+                  DropdownMenuItem(value: "United States", child: Text("United States")),
+                  DropdownMenuItem(value: "Canada", child: Text("Canada")),
+                  DropdownMenuItem(value: "Australia", child: Text("Australia")),
+                  DropdownMenuItem(value: "United Kingdom", child: Text("United Kingdom")),
                 ],
                 onChanged: (value) {},
               ),
@@ -257,7 +247,7 @@ class _FoodDonationFormState extends State<FoodDonationForm> {
                     value: _selectedTitle,
                     items: ["Mr.", "Ms.", "Dr."]
                         .map((String value) =>
-                        DropdownMenuItem(child: Text(value), value: value))
+                        DropdownMenuItem(value: value, child: Text(value)))
                         .toList(),
                     onChanged: (value) {
                       setState(() {
@@ -329,8 +319,8 @@ class _FoodDonationFormState extends State<FoodDonationForm> {
                   border: OutlineInputBorder(),
                 ),
                 items: [
-                  DropdownMenuItem(child: Text("Cooked food"), value: "Cooked food"),
-                  DropdownMenuItem(child: Text("Raw food"), value: "Raw food"),
+                  DropdownMenuItem(value: "Cooked food", child: Text("Cooked food")),
+                  DropdownMenuItem(value: "Raw food", child: Text("Raw food")),
                 ],
                 onChanged: (value) {},
               ),
@@ -398,17 +388,17 @@ class _FoodDonationFormState extends State<FoodDonationForm> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF4A148C),
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                  ),
                   child: Text(
                     "Request Donation",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow[900],
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                   ),
                 ),
               ),

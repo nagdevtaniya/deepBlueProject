@@ -1,10 +1,6 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 
 
@@ -19,7 +15,7 @@ class RecipeChatbot extends StatefulWidget {
 
 class _RecipeChatbotState extends State<RecipeChatbot> {
   String _apiKey = '';
-  List<Map<String, dynamic>> _chatHistory = [];
+  final List<Map<String, dynamic>> _chatHistory = [];
   String _userInput = '';
   String _botResponse = '';
   bool _isLoading = false;

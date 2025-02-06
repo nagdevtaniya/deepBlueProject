@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'predict.dart';
 class CustomerPredictionForm extends StatefulWidget {
+  const CustomerPredictionForm({super.key});
+
   @override
   _CustomerPredictionFormState createState() => _CustomerPredictionFormState();
 }

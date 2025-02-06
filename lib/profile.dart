@@ -1,24 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ProfilePage(),
-      theme: ThemeData(fontFamily: 'Roboto'), // Set font to Roboto
-    );
-  }
-}
-
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -60,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blue.shade200, Colors.blue.shade600],
+                colors: [Color(0xFF4A148C),Color(0xFF4A148C)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -116,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade600,
+                          backgroundColor: Color(0xFF4A148C),
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 40,
@@ -163,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.blue.shade600,
+                          color: Color(0xFF4A148C),
                           border: Border.all(color: Colors.white, width: 2),
                         ),
                         child: const Icon(

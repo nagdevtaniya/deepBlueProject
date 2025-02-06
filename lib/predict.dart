@@ -9,11 +9,20 @@ class PredictionForm extends StatefulWidget {
 
 class _PredictionFormState extends State<PredictionForm> {
   final _formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> _formData = {};
+  final Map<String, dynamic> _formData = {
+    'date': '',
+    'weather': 1,
+    'promotion': 0,
+    'temperature': 0,
+    'special_event': 0,
+    'day_of_week': 1,
+    'month': 1,
+  };
 
   Future<int> predictCustomers(Map<String, dynamic> formData) async {
     final response = await http.post(
-      Uri.parse('http://localhost:5000/predict'),  // Replace with actual URL
+      Uri.parse('http://192.168.162.203:5000/predict'),// Replace with this
+      // Use your actual backend URL
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(formData),
     );
@@ -50,29 +59,48 @@ class _PredictionFormState extends State<PredictionForm> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Day of the week'),
+                decoration: InputDecoration(labelText: 'Date (YYYY-MM-DD)'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a day';
+                    return 'Please enter a date';
                   }
                   return null;
                 },
-                onSaved: (value) => _formData['day'] = value,
+                onSaved: (value) => _formData['date'] = value,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Special event? (yes/no)'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter yes or no';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _formData['special_event'] = value,
+                decoration: InputDecoration(labelText: 'Weather (0 for bad, 1 for good)'),
+                keyboardType: TextInputType.number,
+                onSaved: (value) => _formData['weather'] = int.parse(value ?? '0'),
               ),
-              // Add more fields as needed
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Promotion (0 or 1)'),
+                keyboardType: TextInputType.number,
+                onSaved: (value) => _formData['promotion'] = int.parse(value ?? '0'),
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Temperature'),
+                keyboardType: TextInputType.number,
+                onSaved: (value) => _formData['temperature'] = int.parse(value ?? '0'),
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Special Event (0 or 1)'),
+                keyboardType: TextInputType.number,
+                onSaved: (value) => _formData['special_event'] = int.parse(value ?? '0'),
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Day of the Week (1 for Monday, etc.)'),
+                keyboardType: TextInputType.number,
+                onSaved: (value) => _formData['day_of_week'] = int.parse(value ?? '0'),
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Month (1-12)'),
+                keyboardType: TextInputType.number,
+                onSaved: (value) => _formData['month'] = int.parse(value ?? '0'),
+              ),
               ElevatedButton(
                 onPressed: _submitForm,
                 child: Text('Predict Customers'),

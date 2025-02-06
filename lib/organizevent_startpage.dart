@@ -6,6 +6,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,6 +18,8 @@ class MyApp extends StatelessWidget {
 }
 
 class EventPage extends StatefulWidget {
+  const EventPage({super.key});
+
   @override
   _EventPageState createState() => _EventPageState();
 }
@@ -29,7 +33,7 @@ class _EventPageState extends State<EventPage> {
     'Track RSVPs, manage attendees, and analyze event performance all in one place. From tracking confirmations to sending reminders, our app provides all the tools you need to host a seamless event.',
   ];
 
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   @override
   void dispose() {

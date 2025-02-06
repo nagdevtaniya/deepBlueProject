@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(VolunteerDetailsApp());
-}
-
-class VolunteerDetailsApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: VolunteerDetailsPage(),
-    );
-  }
-}
-
 class VolunteerDetailsPage extends StatelessWidget {
+  const VolunteerDetailsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFF3E5F5), Color(0xFFFFEBEE)], // Light purple to pink
+            colors: [Colors.white], // Light purple to pink
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -31,7 +19,7 @@ class VolunteerDetailsPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               foregroundColor: Colors.white,
-              backgroundColor: Colors.purple,
+              backgroundColor: Color(0xFF4A148C),
               title: Text('Volunteer Details'),
               centerTitle: true,
               leading: IconButton(
@@ -52,7 +40,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 100,
                         child: Text(
                           'Name:',
@@ -74,7 +62,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 100,
                         child: Text(
                           'Contact:',
@@ -112,7 +100,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                                   radius: 30,
                                   child: Icon(
                                     Icons.volunteer_activism, // Volunteer icon
-                                    color: Colors.purple,
+                                    color: Color(0xFF4A148C),
                                     size: 30,
                                   ),
                                 ),
@@ -136,7 +124,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                                   radius: 30,
                                   child: Icon(
                                     Icons.local_shipping, // Pickup icon
-                                    color: Colors.pink,
+                                    color: Color(0xFF4A148C),
                                     size: 30,
                                   ),
                                 ),
@@ -160,7 +148,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                                   radius: 30,
                                   child: Icon(
                                     Icons.emoji_people, // Recipient icon
-                                    color: Colors.red,
+                                    color: Color(0xFF4A148C),
                                     size: 30,
                                   ),
                                 ),

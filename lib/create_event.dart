@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 // ));
 
 class Event extends StatefulWidget {
+  const Event({super.key});
+
   @override
   _EventPageState createState() => _EventPageState();
 }

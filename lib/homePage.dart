@@ -5,18 +5,21 @@ import 'activity.dart';
 import 'analytics.dart';
 import 'fridge.dart';
 import 'menuPage.dart';
+import 'profile.dart';
 
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
   int _current = 0;
-  int _current2= 0;
+  final int _current2= 0;
   int current2 = 0;
   final List<String> imgList = [
     'assets/expiration.png',
@@ -282,7 +285,7 @@ class _MainScreenState extends State<MainScreen> {
   // List of pages for each tab
   final List<Widget> _pages = [
     HomePage(),        // Replace with your HomePage widget
-    Placeholder(),     // Placeholder for DashboardPage if not implemented
+    ProfilePage(),     // Placeholder for DashboardPage if not implemented
     Placeholder(),     // Placeholder for FoodPage if not implemented
     CustomerPredictionForm(),     // Placeholder for AnalyticsPage if not implemented
     MyFridge(),        // Replace with your MyFridgePage widget
@@ -319,7 +322,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             const SizedBox(width: 20),
             const Text(
-              'XYZ',
+              'EcoBite',
               style: TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,

@@ -6,6 +6,8 @@ void main() {
 }
 
 class RecipientDetailsApp extends StatelessWidget {
+  const RecipientDetailsApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,6 +18,8 @@ class RecipientDetailsApp extends StatelessWidget {
 }
 
 class RecipientDetailsPage extends StatelessWidget {
+  const RecipientDetailsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +59,7 @@ class RecipientDetailsPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 100,
                           child: Text(
                             'Name:',
@@ -77,7 +81,7 @@ class RecipientDetailsPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 100,
                           child: Text(
                             'Address:',
@@ -99,7 +103,7 @@ class RecipientDetailsPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 100,
                           child: Text(
                             'Contact:',

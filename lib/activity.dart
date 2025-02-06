@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'create_event.dart';
+import 'donation_form.dart';
+import 'foodrequest.dart';
+import 'volunteer_details.dart';
+
 class BottomSheetOptions {
   static void show(BuildContext context) {
     showModalBottomSheet(
@@ -17,32 +22,40 @@ class BottomSheetOptions {
                 leading: Icon(Icons.volunteer_activism),
                 title: Text('Donate'),
                 onTap: () {
-                  Navigator.pop(context); // Handle your pin action here
-                  // Additional logic for "Pin" can be added here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DonationForm()),
+                  );
                 },
               ),
               ListTile(
                 leading: Icon(Icons.people_outline_outlined),
                 title: Text('Volunteer'),
                 onTap: () {
-                  Navigator.pop(context); // Handle collage action
-                  // Additional logic for "Collage" can be added here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VolunteerDetailsPage()),
+                  );
                 },
               ),
               ListTile(
                 leading: Icon(Icons.local_dining),
                 title: Text('Receive'),
                 onTap: () {
-                  Navigator.pop(context); // Handle board action
-                  // Additional logic for "Board" can be added here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FoodDonationForm()),
+                  );
                 },
               ),
               ListTile(
                 leading: Icon(Icons.event),
                 title: Text('Organize an event'),
                 onTap: () {
-                  Navigator.pop(context); // Handle board action
-                  // Additional logic for "Board" can be added here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Event()),
+                  );
                 },
               ),
             ],

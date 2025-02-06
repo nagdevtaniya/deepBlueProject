@@ -25,6 +25,8 @@ class FoodItem {
 
 
 class MyFridge extends StatefulWidget {
+  const MyFridge({super.key});
+
   @override
   _MyFridgeState createState() => _MyFridgeState();
 }
@@ -189,7 +191,7 @@ class _MyFridgeState extends State<MyFridge> {
 class AddItemScreen extends StatefulWidget {
   final Function(FoodItem) onSave;
 
-  AddItemScreen({required this.onSave});
+  const AddItemScreen({super.key, required this.onSave});
 
   @override
   _AddItemScreenState createState() => _AddItemScreenState();

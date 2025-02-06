@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatelessWidget {
+  const MenuPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +81,7 @@ class MenuPage extends StatelessWidget {
 class CustomButton extends StatelessWidget {
   final String text;
 
-  const CustomButton({required this.text});
+  const CustomButton({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'recipient_details.dart';
 class DonationForm extends StatefulWidget {
+  const DonationForm({super.key});
+
   @override
   _DonationFormState createState() => _DonationFormState();
 }
