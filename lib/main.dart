@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';  // Add this import
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'recipe chatbot.dart';
+// import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'recipe chatbot.dart';
 import 'homePage.dart';
 import 'register.dart';
 

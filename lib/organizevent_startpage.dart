@@ -204,7 +204,7 @@ class _EventPageState extends State<EventPage> {
                           _createEvent(eventData);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Event()),
+                            MaterialPageRoute(builder: (context) => EventPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
