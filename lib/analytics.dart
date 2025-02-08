@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'predict.dart';
+
 class CustomerPredictionForm extends StatefulWidget {
   const CustomerPredictionForm({super.key});
 
@@ -11,13 +12,10 @@ class CustomerPredictionForm extends StatefulWidget {
 class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDate;
-  String _dayType = 'Weekday';
   bool _isSpecialEvent = false;
-  String _weatherCondition = 'Sunny';
   bool _recentPromotion = false;
-  int? _numOfPeople; // New field for number of people
+  int? _numOfPeople;
 
-  // Method to display date picker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -35,9 +33,7 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
   void _resetForm() {
     setState(() {
       _selectedDate = null;
-      _dayType = 'Weekday';
       _isSpecialEvent = false;
-      _weatherCondition = 'Sunny';
       _recentPromotion = false;
       _numOfPeople = null;
     });
@@ -56,7 +52,6 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
           key: _formKey,
           child: ListView(
             children: [
-              // Date field
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: InputDecorator(
@@ -73,28 +68,6 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
               ),
               SizedBox(height: 16.0),
 
-              // Day type dropdown
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: 'Day Type',
-                  border: OutlineInputBorder(),
-                ),
-                value: _dayType,
-                items: ['Weekday', 'Weekend'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _dayType = newValue!;
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
-
-              // Special event checkbox
               CheckboxListTile(
                 title: Text('Special Event or Holiday'),
                 value: _isSpecialEvent,
@@ -105,28 +78,6 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
                 },
               ),
 
-              // Weather condition dropdown
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: 'Weather Condition (Optional)',
-                  border: OutlineInputBorder(),
-                ),
-                value: _weatherCondition,
-                items: ['Sunny', 'Rainy', 'Cloudy', 'Snowy'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _weatherCondition = newValue!;
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
-
-              // Recent promotion checkbox
               CheckboxListTile(
                 title: Text('Recent Promotion'),
                 value: _recentPromotion,
@@ -139,7 +90,6 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
 
               SizedBox(height: 16.0),
 
-              // Number of people input
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Number of People',
@@ -162,12 +112,10 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
 
               SizedBox(height: 24.0),
 
-              // Submit button
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Handle form submission
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Form Submitted Successfully!')),
                     );
@@ -176,12 +124,7 @@ class _CustomerPredictionFormState extends State<CustomerPredictionForm> {
                 },
                 child: Text('Submit'),
               ),
-              ElevatedButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PredictionForm()),
-                );
-              }, child: Text('View Analysis'))
+
             ],
           ),
         ),

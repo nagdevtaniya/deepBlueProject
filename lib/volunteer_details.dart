@@ -6,170 +6,154 @@ class VolunteerDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF4A148C),
+        title: const Text('Volunteer Details'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white], // Light purple to pink
+            colors: [Colors.white, Color(0xFFE1BEE7)], // Light purple gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: SafeArea(
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              foregroundColor: Colors.white,
-              backgroundColor: Color(0xFF4A148C),
-              title: Text('Volunteer Details'),
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 24),
-
-                  // Name Field
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          'Name:',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'John Doe',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24),
-
-                  // Contact Field
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          'Contact:',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          '1234567890',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 40),
-
-                  // Status
-                  Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 24),
+                Expanded(
+                  // This ensures content fills the screen
+                  child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Status',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-                        ),
-                        SizedBox(height: 16),
+                        // Name Field
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.purple[100],
-                                  radius: 30,
-                                  child: Icon(
-                                    Icons.volunteer_activism, // Volunteer icon
-                                    color: Color(0xFF4A148C),
-                                    size: 30,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Volunteer',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
+                            SizedBox(
+                              width: 100,
+                              child: Text(
+                                'Name:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                            Container(
-                              height: 2,
-                              width: 40,
-                              color: Colors.grey,
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                            ),
-                            Column(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.pink[100],
-                                  radius: 30,
-                                  child: Icon(
-                                    Icons.local_shipping, // Pickup icon
-                                    color: Color(0xFF4A148C),
-                                    size: 30,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Pick up',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              height: 2,
-                              width: 40,
-                              color: Colors.grey,
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                            ),
-                            Column(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.red[100],
-                                  radius: 30,
-                                  child: Icon(
-                                    Icons.emoji_people, // Recipient icon
-                                    color: Color(0xFF4A148C),
-                                    size: 30,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Recipient',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
+                            const SizedBox(width: 8),
+                            const Expanded(
+                              child: Text(
+                                'John Doe',
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Contact Field
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              child: Text(
+                                'Contact:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const Expanded(
+                              child: Text(
+                                '1234567890',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+
+                        // Status Section
+                        Center(
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Status',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _buildStatusIcon(Icons.volunteer_activism,
+                                      'Volunteer', Colors.purple[100]!),
+                                  _buildStatusConnector(),
+                                  _buildStatusIcon(Icons.local_shipping,
+                                      'Pick up', Colors.pink[100]!),
+                                  _buildStatusConnector(),
+                                  _buildStatusIcon(Icons.emoji_people,
+                                      'Recipient', Colors.red[100]!),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  // Helper method to build status icons
+  Widget _buildStatusIcon(IconData icon, String label, Color backgroundColor) {
+    return Column(
+      children: [
+        CircleAvatar(
+          backgroundColor: backgroundColor,
+          radius: 30,
+          child: Icon(
+            icon,
+            color: const Color(0xFF4A148C),
+            size: 30,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14),
+        ),
+      ],
+    );
+  }
+
+  // Helper method to build status connectors
+  Widget _buildStatusConnector() {
+    return Container(
+      height: 2,
+      width: 40,
+      color: Colors.grey,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
     );
   }
 }

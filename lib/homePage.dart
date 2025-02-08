@@ -1,3 +1,4 @@
+import 'package:deep_blue_project/pre_analytics.dart';
 import 'package:flutter/material.dart' hide CarouselController;
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -287,7 +288,7 @@ class _MainScreenState extends State<MainScreen> {
     HomePage(),        // Replace with your HomePage widget
     ProfilePage(),     // Placeholder for DashboardPage if not implemented
     Placeholder(),     // Placeholder for FoodPage if not implemented
-    CustomerPredictionForm(),     // Placeholder for AnalyticsPage if not implemented
+    Placeholder(),     // Placeholder for AnalyticsPage if not implemented
     MyFridge(),        // Replace with your MyFridgePage widget
   ];
 
@@ -296,7 +297,11 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       if (index == 2) {
         BottomSheetOptions.show(context); // Show the bottom sheet
-      } else {
+      }
+      else if(index ==3){
+        BottomSheetOptions2.show(context);
+      }
+      else {
         _selectedIndex = index;
       }
     });
