@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+import 'composting chatbot.dart';
 import 'recipe chatbot.dart'; // Assuming this package is used
 
 class FoodItem {
@@ -174,7 +175,11 @@ class _MyFridgeState extends State<MyFridge> {
               right: 16.0,  // Adjust for margin
               child: FloatingActionButton(
                 onPressed: () {
-                  print('eco pressed');
+                  print('CompostingChatbot');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CompostingChatbot()),
+                  );
                 },
                 backgroundColor: Colors.orange,
                 child: const Icon(Icons.eco),

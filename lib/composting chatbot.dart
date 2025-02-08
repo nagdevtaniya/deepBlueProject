@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-class RecipeChatbot extends StatefulWidget {
-  const RecipeChatbot({super.key});
+class CompostingChatbot extends StatefulWidget {
+  const CompostingChatbot({super.key});
 
   @override
-  State<RecipeChatbot> createState() => _RecipeChatbotState();
+  State<CompostingChatbot> createState() => _CompostingChatbotState();
 }
 
-class _RecipeChatbotState extends State<RecipeChatbot> {
+class _CompostingChatbotState extends State<CompostingChatbot> {
   String _apiKey = '';
   final List<Map<String, dynamic>> _chatHistory = [];
   String _userInput = '';
@@ -17,7 +17,7 @@ class _RecipeChatbotState extends State<RecipeChatbot> {
   @override
   void initState() {
     super.initState();
-    _apiKey = 'AIzaSyCrL8QGTHFECKQebWTLIhLpB-fLCLeFzgM'; // Replace with your actual API key
+    _apiKey = 'AIzaSyAvMR4zdJLyTG_Yyb94YlCuqT9GDcld1nc'; // Replace with your actual API key
   }
 
   Future<void> _sendMessage() async {
@@ -41,10 +41,10 @@ class _RecipeChatbotState extends State<RecipeChatbot> {
           responseMimeType: 'text/plain',
         ),
         systemInstruction: Content.system(
-          'You are a recipe generator chatbot. When the user says hi, ask them what ingredients or leftovers they have, and suggest recipes. '
-              'Later, tell them how much waste you have reduced and how the food can last longer. '
-              'Lastly, give them suggestions on storing leftovers.'
-              'Also use cute emojis at appropriate places',
+          'You are a composting chatbot. When the user says hi, ask them what food stuff has gone bad, and suggest steps to convert it to compost. '
+              'Later, tell them how much waste you have reduced and how they can use the compost. '
+              'Lastly, tell them the amount of positive impact they have on environment.'
+               'Also use cute emojis at appropriate places',
         ),
       );
 
@@ -73,7 +73,7 @@ class _RecipeChatbotState extends State<RecipeChatbot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('YummiAi😋'),
+        title: const Text('ReGenie🌿🍃'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
