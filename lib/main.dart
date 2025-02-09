@@ -46,12 +46,33 @@ class _WelcomePageState extends State<WelcomePage> {
     // TODO: implement initState
     super.initState();
 
-
-    Timer(Duration(seconds: 2),(){
-      Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context){return LoginPage();}
-      ));
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        Timer(Duration(seconds: 2),(){
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context){
+                return MainScreen();
+              }
+          ));
+        });
+      } else {
+        Timer(Duration(seconds: 2),(){
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context){
+                return LoginPage();
+              }
+          ));
+        });
+      }
     });
+
+    // Timer(Duration(seconds: 2),(){
+    //   Navigator.pushReplacement(context, MaterialPageRoute(
+    //       builder: (context){
+    //         return LoginPage();
+    //       }
+    //   ));
+    // });
   }
   @override
   Widget build(BuildContext context) {

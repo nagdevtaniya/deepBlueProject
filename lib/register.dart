@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';  // Import Firestore
 import 'package:flutter/material.dart';
 import 'homePage.dart';
-
-
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   RegisterPage({super.key});
 
@@ -18,16 +18,24 @@ class RegisterPage extends StatelessWidget {
 
     try {
       // Create a new user with Firebase Authentication
-      await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Navigate to MainScreen after successful registration
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()), // Adjust the MainScreen if needed
-      );
+      // Get the user object
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // Add the user's email and name to Firestore
+        await _addUserToFirestore(user, context);
+
+        // Navigate to HomePage after successful registration
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen()), // Adjust HomePage if needed
+        );
+      }
     } on FirebaseAuthException catch (e) {
       String errorMessage = "An error occurred. Please try again.";
       if (e.code == 'weak-password') {
@@ -36,6 +44,30 @@ class RegisterPage extends StatelessWidget {
         errorMessage = 'The email is already in use.';
       }
       _showErrorDialog(context, errorMessage); // Pass context to the error dialog
+    }
+  }
+
+  // Function to add the user's email and name to Firestore
+  Future<void> _addUserToFirestore(User user, BuildContext context) async {
+    try {
+      // Reference to the Firestore collection 'users'
+      CollectionReference usersRef = _firestore.collection('users');
+      // Add user data under the user's UID
+      await usersRef.doc(user.uid).set({
+        'email': user.email,  // Store the email
+        'name': user.email?.split('@')[0] ?? 'Anonymous',  // Store the name (default to 'Anonymous' if null)
+        'mobile_number': '-',
+        'add': '-',
+        'meals_contributed': 0,
+        'coins-earned': 0,
+        'rewards': '-',
+        'food-saved': '0kg'
+      });
+
+      print('User data added to Firestore!');
+    } catch (e) {
+      print('Error adding user data to Firestore: $e');
+      _showErrorDialog(context, 'Failed to save user data. Please try again.');
     }
   }
 
