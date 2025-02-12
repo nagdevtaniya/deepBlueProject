@@ -5,6 +5,10 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'composting chatbot.dart';
 import 'recipe chatbot.dart'; // Assuming this package is used
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
 
 class FoodItem {
   final int id;
@@ -230,7 +234,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
     }
   }
 
-  void _saveItem() {
+  Future<void> _saveItem() async {
     if (nameController.text.isNotEmpty && int.tryParse(quantityController.text) != null) {
       final item = FoodItem(
         id: _idCounter++,
@@ -240,9 +244,33 @@ class _AddItemScreenState extends State<AddItemScreen> {
         expiryDate: expiryDate,
         quantity: int.parse(quantityController.text),
       );
-      widget.onSave(item);
-      Navigator.pop(context);
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userID = user.uid;
+
+        // Store item under current user's email in Firestore
+        final docRef = FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('fridgeItems')
+            .doc(); // Use ID as document ID
+
+        await docRef.set({
+          'name': item.name,
+          'location': item.location,
+          'purchaseDate': item.purchaseDate,
+          'expiryDate': item.expiryDate,
+          'quantity': item.quantity,
+        });
+        print("Item successfull");
+        widget.onSave(item);
+        Navigator.pop(context);
+      }
+      else {
+        print("User is not authenticated.");
+      }
     }
+
   }
 
 
