@@ -47,15 +47,39 @@ class _MyFridgeState extends State<MyFridge> {
     });
   }
 
-  void _deleteItem(int index) {
+  void _deleteItem(int index) async {
     final removedItem = items[index];
-    items.removeAt(index);
-    _listKey.currentState?.removeItem(
-      index,
-          (context, animation) => _buildItem(removedItem, index, animation),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${removedItem.name} dismissed")));
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final userID = user.uid;
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .collection('fridgeItems')
+          .where('name', isEqualTo: removedItem.name) // Match by name
+          .where('purchaseDate', isEqualTo: removedItem.purchaseDate) // Ensure uniqueness
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      _listKey.currentState?.removeItem(
+        index,
+            (context, animation) => _buildItem(removedItem, index, animation),
+      );
+
+      setState(() {
+        items.removeAt(index);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("${removedItem.name} removed")),
+      );
+    }
   }
+
 
   void _navigateToAddItem() {
     Navigator.push(
@@ -111,12 +135,19 @@ class _MyFridgeState extends State<MyFridge> {
           key: _listKey,
           initialItemCount: items.length,
           itemBuilder: (context, index, animation) {
-            return GestureDetector(
-              onHorizontalDragEnd: (details) {
-                if (details.primaryVelocity! < 0) _deleteItem(index); // Swipe left to delete
-              },
+            return Dismissible(
+              key: Key(items[index].name), // Unique key
+              direction: DismissDirection.endToStart, // Swipe left to delete
+              onDismissed: (_) => _deleteItem(index),
+              background: Container(
+                color: Colors.red,
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Icon(Icons.delete, color: Colors.white),
+              ),
               child: _buildItem(items[index], index, animation),
             );
+
           },
         ),
 
@@ -236,24 +267,23 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   Future<void> _saveItem() async {
     if (nameController.text.isNotEmpty && int.tryParse(quantityController.text) != null) {
-      final item = FoodItem(
-        id: _idCounter++,
-        name: nameController.text,
-        location: location,
-        purchaseDate: purchaseDate,
-        expiryDate: expiryDate,
-        quantity: int.parse(quantityController.text),
-      );
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         final userID = user.uid;
-
-        // Store item under current user's email in Firestore
         final docRef = FirebaseFirestore.instance
             .collection('users')
             .doc(userID)
             .collection('fridgeItems')
-            .doc(); // Use ID as document ID
+            .doc(); // Auto-generate unique ID
+
+        final item = FoodItem(
+          id: int.parse(docRef.id.hashCode.toString()), // Convert Firestore ID to int
+          name: nameController.text,
+          location: location,
+          purchaseDate: purchaseDate,
+          expiryDate: expiryDate,
+          quantity: int.parse(quantityController.text),
+        );
 
         await docRef.set({
           'name': item.name,
@@ -262,16 +292,15 @@ class _AddItemScreenState extends State<AddItemScreen> {
           'expiryDate': item.expiryDate,
           'quantity': item.quantity,
         });
-        print("Item successfull");
+
         widget.onSave(item);
         Navigator.pop(context);
-      }
-      else {
+      } else {
         print("User is not authenticated.");
       }
     }
-
   }
+
 
 
   @override
