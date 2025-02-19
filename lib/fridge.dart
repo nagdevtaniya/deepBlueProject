@@ -40,11 +40,45 @@ class _MyFridgeState extends State<MyFridge> {
   List<FoodItem> items = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
+  @override
+  void initState() {
+    super.initState();
+    _loadItems(); // Load items when the screen is created
+  }
   void _addItem(FoodItem item) {
     setState(() {
       items.add(item);
       _listKey.currentState?.insertItem(items.length - 1); // Animate addition
     });
+  }
+
+  void _loadItems() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final userID = user.uid;
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .collection('fridgeItems')
+          .get();
+
+      List<FoodItem> fetchedItems = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return FoodItem(
+          id: doc.id.hashCode, // Use Firestore ID as hash
+          name: data['name'],
+          location: data['location'],
+          purchaseDate: (data['purchaseDate'] as Timestamp).toDate(),
+          expiryDate: (data['expiryDate'] as Timestamp).toDate(),
+          quantity: data['quantity'],
+        );
+      }).toList();
+
+      setState(() {
+        items = fetchedItems;
+      });
+    }
   }
 
   void _deleteItem(int index) async {
@@ -238,7 +272,6 @@ class AddItemScreen extends StatefulWidget {
 }
 
 class _AddItemScreenState extends State<AddItemScreen> {
-  int _idCounter = 0;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController quantityController = TextEditingController(text: '1');
   String location = 'Fridge';
