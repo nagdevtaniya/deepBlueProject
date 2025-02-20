@@ -24,7 +24,7 @@ class _PredictionFormState extends State<PredictionForm> {
 
   Future<int> predictCustomers(Map<String, dynamic> formData) async {
     final response = await http.post(
-      Uri.parse('http://192.168.47.154:5000/predict'), // Replace with your actual backend URL
+      Uri.parse('http://192.168.153.154:5000/predict'), // Replace with your actual backend URL
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(formData),
     );
