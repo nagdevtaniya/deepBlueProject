@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,6 +15,12 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
+  String mealsContributed = "0";
+  String coinsEarned = "0";
+  String rewards = "0";
+  String foodSaved = "0";
+  String userID = "";
+
   @override
   void initState() {
     super.initState();
@@ -22,16 +29,42 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // Fetch user data from Firestore
   void _fetchUserData() async {
-    // Assuming a document named 'user1' in 'users' collection
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc('user1').get();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    userID = user.uid;
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       setState(() {
-        _usernameController.text = userDoc['username'] ?? "Default Name";
-        _phoneController.text = userDoc['phone'] ?? "-";
-        _addressController.text = userDoc['address'] ?? "Unknown Address";
+        _usernameController.text = userDoc['name'] ?? "Default Name";
+        _phoneController.text = userDoc['mobile_number'] ?? "-";
+        _addressController.text = userDoc['add'] ?? "Unknown Address";
+        mealsContributed = userDoc['meals_contributed']?.toString() ?? "0";
+        coinsEarned = userDoc['coins-earned']?.toString() ?? "0";
+        rewards = userDoc['rewards']?.toString() ?? "0";
+        foodSaved = "${userDoc['food-saved'] ?? "0"}kg";
+        print(foodSaved);
       });
     }
+  }
+
+  void _updateUserData() async {
+    if (userID.isEmpty) return;
+
+    await FirebaseFirestore.instance.collection('users').doc(userID).update({
+      'name': _usernameController.text,
+      'mobile_number': _phoneController.text,
+      'add': _addressController.text,
+    });
+
+    setState(() {
+      _isEditing = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Profile updated successfully!")),
+    );
   }
 
   @override
@@ -43,9 +76,9 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             height: 200,
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF4A148C),Color(0xFF4A148C)],
+                colors: [Color(0xFF4A148C), Color(0xFF4A148C)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -66,8 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           // White Box
-          Align(
-            alignment: Alignment.topCenter,
+          Expanded(
             child: Container(
               margin: const EdgeInsets.only(top: 130),
               width: double.infinity,
@@ -79,43 +111,50 @@ class _ProfilePageState extends State<ProfilePage> {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 50),
-                    _isEditing ? buildEditableInfoRow("Username:", _usernameController) : buildInfoRow("Username:", _usernameController.text),
-                    _isEditing ? buildEditableInfoRow("Phone Number:", _phoneController) : buildInfoRow("Phone Number:", _phoneController.text),
-                    _isEditing ? buildEditableInfoRow("Address:", _addressController) : buildInfoRow("Address:", _addressController.text),
-                    buildInfoRow("No of meals contributed:", "10"),
-                    buildInfoRow("Coins Earned:", "30"),
-                    buildInfoRow("Rewards:", "25"),
-                    buildInfoRow("Amount of food saved:", "30kg"),
-                    const SizedBox(height: 20),
-                    // Edit Profile Button
-                    Container(
-                      margin: const EdgeInsets.all(25.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _isEditing = !_isEditing;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF4A148C),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Text(_isEditing ? "Save Profile" : "Edit Profile"),
-                      ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 50),
+                  Flexible(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      children: [
+                        _isEditing ? buildEditableInfoRow("Username:", _usernameController) : buildInfoRow("Username:", _usernameController.text),
+                        _isEditing ? buildEditableInfoRow("Phone Number:", _phoneController) : buildInfoRow("Phone Number:", _phoneController.text),
+                        _isEditing ? buildEditableInfoRow("Address:", _addressController) : buildInfoRow("Address:", _addressController.text),
+                        buildInfoRow("No of meals contributed:", mealsContributed),
+                        buildInfoRow("Coins Earned:", coinsEarned),
+                        buildInfoRow("Rewards:", rewards),
+                        buildInfoRow("Amount of food saved:", foodSaved),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Edit Profile Button
+                  Container(
+                    margin: const EdgeInsets.all(25.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_isEditing) {
+                          _updateUserData();
+                        } else {
+                          setState(() => _isEditing = true);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4A148C),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 40,
+                          vertical: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: Text(_isEditing ? "Save Profile" : "Edit Profile"),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -133,14 +172,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: NetworkImage('https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ='), // Placeholder image
+                        image: NetworkImage('https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ='),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                   Positioned(
                     bottom: 0,
-                    right: 0,
+                    right: 8,
                     child: GestureDetector(
                       onTap: () {
                         // Handle picture addition
@@ -148,13 +187,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Color(0xFF4A148C),
+                          color: const Color(0xFF4A148C),
                           border: Border.all(color: Colors.white, width: 2),
                         ),
                         child: const Icon(
                           Icons.add,
                           color: Colors.white,
-                          size: 20,
+                          size: 22,
                         ),
                       ),
                     ),

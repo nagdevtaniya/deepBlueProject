@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';  // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'homePage.dart';
 
@@ -61,7 +61,8 @@ class RegisterPage extends StatelessWidget {
         'meals_contributed': 0,
         'coins-earned': 0,
         'rewards': '-',
-        'food-saved': '0kg'
+        'food-saved': '0kg',
+        'recipient': '0'
       });
 
       print('User data added to Firestore!');
