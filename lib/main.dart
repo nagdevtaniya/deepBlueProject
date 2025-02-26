@@ -7,6 +7,44 @@ import 'homePage.dart';
 import 'register.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Add this import
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+Future<void> requestLocationPermission() async {
+  // Request location permission
+  final status = await Permission.location.request();
+
+  print('User granted location permission: ${status.isGranted}');
+
+  if (status.isGranted) {
+    // Permission granted, fetch the user's location
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      print('User location: ${position.latitude}, ${position.longitude}');
+
+      // Save the location to Firestore
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+          'location': GeoPoint(position.latitude, position.longitude),
+        });
+        print('Location saved to Firestore.');
+      }
+    } catch (e) {
+      print('Error fetching location: $e');
+    }
+  } else if (status.isDenied) {
+    // Permission denied
+    print('Location permission denied.');
+  } else if (status.isPermanentlyDenied) {
+    // Permission permanently denied, navigate to app settings
+    print('Location permission permanently denied.');
+    openAppSettings();
+  }
+}
 
 Future<void> requestNotificationPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -173,8 +211,9 @@ class _LoginPageState extends State<LoginPage> {
 
       print('Login successful: ${userCredential.user?.uid}');
 
-      await requestNotificationPermission();
 
+      await requestLocationPermission();
+      await requestNotificationPermission();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainScreen()),
@@ -203,6 +242,8 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       // Request notification permission after successful registration
+
+      await requestLocationPermission();
       await requestNotificationPermission();
 
       // If registration is successful, navigate to the main screen
